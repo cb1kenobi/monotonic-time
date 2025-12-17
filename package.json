@@ -1,0 +1,52 @@
+{
+  "name": "@cb1kenobi/monotonic-time",
+  "version": "0.0.1",
+  "description": "Monotonic time for Node.js",
+  "license": "Apache-2.0",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.mjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.js",
+      "import": "./dist/index.mjs",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "type": "module",
+  "gypfile": true,
+  "scripts": {
+    "build": "pnpm build:bundle && pnpm rebuild",
+    "build:bundle": "node scripts/clean-dist.mjs && tsdown -c tsdown.config.ts",
+    "prepublishOnly": "pnpm build:bundle && pnpm prebuild",
+    "rebuild": "node-gyp rebuild"
+  },
+  "files": [
+    "binding.gyp",
+    "dist",
+    "src/binding"
+  ],
+  "devDependencies": {
+    "@rollup/plugin-replace": "6.0.3",
+    "@types/node": "25.0.3",
+    "node-gyp": "12.1.0",
+    "prebuildify": "6.0.1",
+    "tsdown": "0.18.0",
+    "tslib": "2.8.1",
+    "tsx": "4.21.0",
+    "typescript": "5.9.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "optionalDependencies": {
+    "@cb1kenobi/monotonic-time-darwin-arm64": "0.0.1",
+    "@cb1kenobi/monotonic-time-darwin-x64": "0.0.1",
+    "@cb1kenobi/monotonic-time-linux-arm64": "0.0.1",
+    "@cb1kenobi/monotonic-time-linux-x64": "0.0.1",
+    "@cb1kenobi/monotonic-time-win32-arm64": "0.0.1",
+    "@cb1kenobi/monotonic-time-win32-x64": "0.0.1"
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "name": "",
+  "version": "",
+  "description": "",
+  "license": "",
+  "main": "",
+  "exports": {
+    ".": ""
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "preferUnplugged": true,
+  "engines": {},
+  "os": [],
+  "cpu": []
+}
