@@ -1,5 +1,8 @@
 #include <node_api.h>
 #include <atomic>
+#include <cstdint>
+#include <chrono>
+#include <limits>
 #include <ctime>
 #include <string>
 
