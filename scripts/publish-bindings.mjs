@@ -68,6 +68,7 @@ for (const target of Object.keys(bindings)) {
 	writeFileSync(join(tmpDir, 'README.md'), `# ${name}-${target}\n\n` +
 		`${target} binding for [${name}](https://npmjs.com/package/${packageName}).`);
 	writeFileSync(join(tmpDir, 'package.json'), pkgJson);
+	writeFileSync(join(tmpDir, '.npmrc'), `//registry.npmjs.org/:_authToken=${process.env.NODE_AUTH_TOKEN}\n`);
 
 	try {
 		execFileSync('pnpm', ['publish', '--access', 'public', '--dry-run', '--tag', tag], { cwd: tmpDir, stdio: 'inherit' });
