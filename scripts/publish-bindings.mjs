@@ -56,7 +56,10 @@ for (const target of Object.keys(bindings)) {
 		preferUnplugged: true,
 		engines: packageJson.engines,
 		os: [ platform ],
-		cpu: [ arch ]
+		cpu: [ arch ],
+		homepage: packageJson.homepage,
+		bugs: packageJson.bugs,
+		repository: packageJson.repository
 	}, null, 2);
 
 	console.log('Publishing:', pkgJson);
