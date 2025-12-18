@@ -4,9 +4,13 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join, relative, resolve } from 'node:path';
 import { tmpdir } from 'node:os';
 
+if (!process.env.NODE_AUTH_TOKEN) {
+	throw new Error('NODE_AUTH_TOKEN environment variable is not set');
+}
+
 const __dirname = fileURLToPath(dirname(import.meta.url));
 const packageJson = JSON.parse(readFileSync(resolve(__dirname, '..', 'package.json'), 'utf8'));
-const tag = process.env.TAG;
+const tag = process.env.TAG || 'latest';
 const artifactsDir = resolve(__dirname, '..', 'artifacts');
 const name = 'monotonic-time';
 const bindingFilename = `${name}.node`;
@@ -65,7 +69,12 @@ for (const target of Object.keys(bindings)) {
 		`${target} binding for [${name}](https://npmjs.com/package/${packageName}).`);
 	writeFileSync(join(tmpDir, 'package.json'), pkgJson);
 
-	execFileSync('pnpm', ['publish', '--access', 'public', '--dry-run', '--tag', tag], { cwd: tmpDir, stdio: 'inherit' });
+	try {
+		execFileSync('pnpm', ['publish', '--access', 'public', '--dry-run', '--tag', tag], { cwd: tmpDir, stdio: 'inherit' });
+	} catch (error) {
+		console.error(`Failed to publish ${packageName}:`, error);
+		process.exit(1);
+	}
 
 	console.log(`Published ${packageName} to npm\n`);
 }
