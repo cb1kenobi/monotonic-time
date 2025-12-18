@@ -33,7 +33,7 @@ jobs:
 
       - name: Check versions
         shell: bash
-        run: node scripts/check-versions.mjs
+        run: node scripts/check-versions.mjs ${{ github.event.release.tag_name }}
 
       - name: Build
         shell: bash
