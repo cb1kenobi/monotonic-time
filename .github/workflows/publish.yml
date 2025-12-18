@@ -54,7 +54,7 @@ jobs:
         run: pnpm install --ignore-scripts --no-frozen-lockfile
 
       - name: Build binding
-        run: pnpm rebuild
+        run: pnpm build
 
       - name: Test binding
         run: node scripts/test-binding.mjs
