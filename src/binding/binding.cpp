@@ -1,9 +1,10 @@
 #include <node_api.h>
 #include <atomic>
-#include <cstdint>
 #include <chrono>
-#include <limits>
+#include <cmath>
+#include <cstdint>
 #include <ctime>
+#include <limits>
 #include <string>
 
 #define NAPI_STATUS_THROWS(call) \

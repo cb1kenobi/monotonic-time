@@ -55,20 +55,15 @@ jobs:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: pnpm install --ignore-scripts --no-frozen-lockfile
 
-      - name: Build
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
-        run: pnpm build
-
       - name: Test Binding
-        run: pnpm test:release-binding
+        run: node scripts/test-binding.mjs
 
       - name: Upload artifact
         uses: actions/upload-artifact@v6
         with:
           name: ${{ matrix.platform.name }}
           path: |
-            build/Release/rocksdb-js.node
+            build/Release/monotonic-time.node
           if-no-files-found: error
 
   publish:
@@ -77,6 +72,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v6
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: latest
 
       - name: Setup node
         uses: actions/setup-node@v6
@@ -97,11 +97,11 @@ jobs:
       - name: List artifacts
         run: ls -la artifacts
 
-      - name: Publish rocksdb-js platform specific bindings to npm
+      - name: Publish monotonic-time platform specific bindings to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           TAG: ${{ github.event.release.prerelease && 'next' || 'latest' }}
-        run: node scripts/publish.mjs
+        run: node scripts/publish-bindings.mjs
 
       # - name: Publish rocksdb-js to npm
       #   env:
