@@ -110,4 +110,4 @@ jobs:
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-        run: pnpm publish --access public --dry-run --tag ${{ github.event.release.prerelease && 'next' || 'latest' }}
+        run: npm publish --access public --dry-run --tag ${{ github.event.release.prerelease && 'next' || 'latest' }}

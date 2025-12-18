@@ -19,12 +19,14 @@ for (const target of await readdir(artifactsDir)) {
 	try {
 		const binding = join(artifactsDir, target, bindingFilename);
 		if ((await stat(binding)).isFile()) {
+			console.log('Found binding:', binding);
 			bindings[target] = binding;
 		}
 	} catch {
 		// ignore
 	}
 }
+console.log();
 
 // cross check the bindings against the optionalDependencies
 for (const dep of Object.keys(packageJson.optionalDependencies)) {
@@ -32,7 +34,9 @@ for (const dep of Object.keys(packageJson.optionalDependencies)) {
 	if (!bindings[target]) {
 		throw new Error(`Binding for ${dep} not found in artifacts`);
 	}
+	console.log(`Found binding for ${dep}`);
 }
+console.log();
 
 for (const target of Object.keys(bindings)) {
 	const [platform, arch] = target.split('-');
@@ -53,8 +57,7 @@ for (const target of Object.keys(bindings)) {
 		cpu: [ arch ]
 	}, null, 2);
 
-	console.log(`Publishing ${packageName}`);
-	console.log(pkgJson);
+	console.log('Publishing:', pkgJson);
 
 	const tmpDir = join(tmpdir(), `${name}-${target}-${packageJson.version}`);
 	await mkdir(tmpDir, { recursive: true });
@@ -64,7 +67,7 @@ for (const target of Object.keys(bindings)) {
 		`${target} binding for [${name}](https://npmjs.com/package/${packageName}).`);
 	await writeFile(join(tmpDir, 'package.json'), pkgJson);
 
-	await execAsync(`pnpm publish --access public --dry-run --tag ${tag}`, { cwd: tmpDir, stdio: 'inherit' });
+	await execAsync(`npm publish --access public --dry-run --tag ${tag}`, { cwd: tmpDir, stdio: 'inherit' });
 
-	console.log(`Published ${packageName} to npm`);
+	console.log(`Published ${packageName} to npm\n`);
 }
