@@ -1,12 +1,12 @@
-import { dirname, join, resolve } from 'node:path';
+import { dirname, join, parse, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { readdirSync, existsSync } from 'node:fs';
+import { readdirSync, statSync } from 'node:fs';
 import { createRequire } from 'node:module';
 
 const nativeExtRE = /\.node$/;
 
 function locateBinding(): string {
-	const baseDir = dirname(dirname(fileURLToPath(import.meta.url)));
+	let baseDir = dirname(dirname(fileURLToPath(import.meta.url)));
 
 	for (const type of ['Release', 'Debug'] as const) {
 		try {
@@ -21,12 +21,16 @@ function locateBinding(): string {
 	}
 
 	// check node_modules
-	try {
-		const path = join(baseDir, 'node_modules', '@cb1kenobi', `monotonic-time-${process.platform}-${process.arch}`, 'monotonic-time.node');
-		if (existsSync(path)) {
-			return resolve(path);
-		}
-	} catch {}
+	const { root } = parse(baseDir);
+	while (baseDir !== root) {
+		try {
+			const path = join(baseDir, 'node_modules', '@cb1kenobi', `monotonic-time-${process.platform}-${process.arch}`, 'monotonic-time.node');
+			if (statSync(path).isFile()) {
+				return path;
+			}
+		} catch {}
+		baseDir = dirname(baseDir);
+	}
 
 	throw new Error('Unable to locate monotonic-time native binding');
 }
@@ -36,5 +40,5 @@ const bindingPath = locateBinding();
 console.log(`Loading binding from ${bindingPath}`);
 const binding = req(bindingPath);
 
-export const monotonicTime = binding.monotonicTime;
+export const monotonicTime: () => number = binding.monotonicTime;
 export default monotonicTime;
