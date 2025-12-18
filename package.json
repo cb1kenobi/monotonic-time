@@ -1,6 +1,6 @@
 {
   "name": "@cb1kenobi/monotonic-time",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "Monotonic time for Node.js",
   "license": "Apache-2.0",
   "main": "./dist/index.cjs",
@@ -47,11 +47,11 @@
     "url": "https://github.com/cb1kenobi/monotonic-time"
   },
   "optionalDependencies": {
-    "@cb1kenobi/monotonic-time-darwin-arm64": "0.0.4",
-    "@cb1kenobi/monotonic-time-darwin-x64": "0.0.4",
-    "@cb1kenobi/monotonic-time-linux-arm64": "0.0.4",
-    "@cb1kenobi/monotonic-time-linux-x64": "0.0.4",
-    "@cb1kenobi/monotonic-time-win32-arm64": "0.0.4",
-    "@cb1kenobi/monotonic-time-win32-x64": "0.0.4"
+    "@cb1kenobi/monotonic-time-darwin-arm64": "0.0.5",
+    "@cb1kenobi/monotonic-time-darwin-x64": "0.0.5",
+    "@cb1kenobi/monotonic-time-linux-arm64": "0.0.5",
+    "@cb1kenobi/monotonic-time-linux-x64": "0.0.5",
+    "@cb1kenobi/monotonic-time-win32-arm64": "0.0.5",
+    "@cb1kenobi/monotonic-time-win32-x64": "0.0.5"
   }
 }
