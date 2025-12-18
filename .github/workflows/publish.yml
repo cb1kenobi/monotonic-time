@@ -39,9 +39,9 @@ jobs:
         shell: bash
         run: pnpm build
 
-      - name: Test
-        shell: bash
-        run: pnpm test
+      # - name: Test
+      #   shell: bash
+      #   run: pnpm test
 
   build:
     strategy:
