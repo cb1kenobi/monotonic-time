@@ -37,7 +37,7 @@ function locateBinding(): string {
 
 const req = createRequire(import.meta.url);
 const bindingPath = locateBinding();
-console.log(`Loading binding from ${bindingPath}`);
+// console.log(`Loading binding from ${bindingPath}`);
 const binding = req(bindingPath);
 
 export const monotonicTime: () => number = binding.monotonicTime;
