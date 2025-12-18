@@ -51,9 +51,10 @@ jobs:
 
       - name: Install dependencies
         shell: bash
-        env:
-          GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: pnpm install --ignore-scripts --no-frozen-lockfile
+
+      - name: Build Binding
+        run: pnpm rebuild
 
       - name: Test Binding
         run: node scripts/test-binding.mjs
@@ -84,10 +85,12 @@ jobs:
           node-version: 24
           registry-url: 'https://registry.npmjs.org'
 
-      - name: Setup dependencies
-        uses: ./.github/actions/setup-deps
-        with:
-          gh-token: ${{ secrets.GH_TOKEN }}
+      - name: Install dependencies
+        shell: bash
+        run: pnpm install --ignore-scripts --no-frozen-lockfile
+
+      - name: Build Bundle
+        run: pnpm build
 
       - name: Download artifact
         uses: actions/download-artifact@v7
@@ -103,7 +106,7 @@ jobs:
           TAG: ${{ github.event.release.prerelease && 'next' || 'latest' }}
         run: node scripts/publish-bindings.mjs
 
-      # - name: Publish rocksdb-js to npm
+      # - name: Publish to npm
       #   env:
       #     NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
       #   run: npm publish --tag ${{ github.event.release.prerelease && 'next' || 'latest' }}
