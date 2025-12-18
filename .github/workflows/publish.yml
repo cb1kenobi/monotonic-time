@@ -53,10 +53,10 @@ jobs:
         shell: bash
         run: pnpm install --ignore-scripts --no-frozen-lockfile
 
-      - name: Build Binding
+      - name: Build binding
         run: pnpm rebuild
 
-      - name: Test Binding
+      - name: Test binding
         run: node scripts/test-binding.mjs
 
       - name: Upload artifact
