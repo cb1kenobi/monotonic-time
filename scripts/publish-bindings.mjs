@@ -34,17 +34,10 @@ for (const dep of Object.keys(packageJson.optionalDependencies)) {
 	}
 }
 
-await Promise.all(Object.keys(bindings).map(async (target) => {
+for (const target of Object.keys(bindings)) {
 	const [platform, arch] = target.split('-');
 	const packageName = `${packageJson.name}-${target}`;
-
-	const tmpDir = join(tmpdir(), `${name}-${target}-${packageJson.version}`);
-	await mkdir(tmpDir, { recursive: true });
-
-	await copyFile(bindings[target], join(tmpDir, bindingFilename));
-	await writeFile(join(tmpDir, 'README.md'), `# ${name}-${target}\n\n` +
-		`${target} binding for [${name}](https://npmjs.com/package/${packageName}).`);
-	await writeFile(join(tmpDir, 'package.json'), JSON.stringify({
+	const pkgJson = JSON.stringify({
 		name: packageName,
 		version: packageJson.version,
 		description: `${target} binding for ${name}`,
@@ -58,9 +51,20 @@ await Promise.all(Object.keys(bindings).map(async (target) => {
 		engines: packageJson.engines,
 		os: [ platform ],
 		cpu: [ arch ]
-	}, null, 2));
+	}, null, 2);
 
-	await execAsync(`pnpm publish --access public --dry-run --tag ${tag}`, { cwd: tmpDir });
+	console.log(`Publishing ${packageName}`);
+	console.log(pkgJson);
+
+	const tmpDir = join(tmpdir(), `${name}-${target}-${packageJson.version}`);
+	await mkdir(tmpDir, { recursive: true });
+
+	await copyFile(bindings[target], join(tmpDir, bindingFilename));
+	await writeFile(join(tmpDir, 'README.md'), `# ${name}-${target}\n\n` +
+		`${target} binding for [${name}](https://npmjs.com/package/${packageName}).`);
+	await writeFile(join(tmpDir, 'package.json'), pkgJson);
+
+	await execAsync(`pnpm publish --access public --dry-run --tag ${tag}`, { cwd: tmpDir, stdio: 'inherit' });
 
 	console.log(`Published ${packageName} to npm`);
-}));
+}
