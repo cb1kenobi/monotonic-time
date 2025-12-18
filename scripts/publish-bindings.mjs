@@ -71,7 +71,11 @@ for (const target of Object.keys(bindings)) {
 	writeFileSync(join(tmpDir, '.npmrc'), `//registry.npmjs.org/:_authToken=${process.env.NODE_AUTH_TOKEN}\n`);
 
 	try {
-		execFileSync('pnpm', ['publish', '--access', 'public', '--dry-run', '--tag', tag], { cwd: tmpDir, stdio: 'inherit' });
+		execFileSync('pnpm', ['publish', '--access', 'public', '--dry-run', '--tag', tag], {
+			cwd: tmpDir,
+			stdio: 'inherit',
+			env: { ...process.env, FORCE_COLOR: '1' }
+		});
 	} catch (error) {
 		console.error(`Failed to publish ${packageName}:`, error);
 		process.exit(1);

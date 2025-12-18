@@ -54,9 +54,11 @@ jobs:
         run: pnpm install --ignore-scripts --no-frozen-lockfile
 
       - name: Build binding
+        shell: bash
         run: pnpm build
 
       - name: Test binding
+        shell: bash
         run: node scripts/test-binding.mjs
 
       - name: Upload artifact
@@ -91,6 +93,7 @@ jobs:
         run: pnpm install --ignore-scripts --no-frozen-lockfile
 
       - name: Build Bundle
+        shell: bash
         run: pnpm build
 
       - name: Download artifact
@@ -99,15 +102,19 @@ jobs:
           path: artifacts
 
       - name: List artifacts
+        shell: bash
         run: find artifacts -ls
 
       - name: Publish bindings to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           TAG: ${{ github.event.release.prerelease && 'next' || 'latest' }}
+        shell: bash
         run: node scripts/publish-bindings.mjs
 
       - name: Publish to npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        shell: bash
+        # pnpm detaches the local repo from HEAD, so we need to disable git checks
         run: pnpm publish --access public --dry-run --no-git-checks --tag ${{ github.event.release.prerelease && 'next' || 'latest' }}

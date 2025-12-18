@@ -17,13 +17,11 @@
   "scripts": {
     "build": "pnpm build:bundle && pnpm rebuild",
     "build:bundle": "node scripts/clean-dist.mjs && tsdown -c tsdown.config.ts",
-    "prepublishOnly": "pnpm build:bundle && pnpm prebuild",
+    "prepublishOnly": "pnpm build",
     "rebuild": "node-gyp rebuild"
   },
   "files": [
-    "binding.gyp",
-    "dist",
-    "src/binding"
+    "dist"
   ],
   "devDependencies": {
     "@rollup/plugin-replace": "6.0.3",
