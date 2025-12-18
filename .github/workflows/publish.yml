@@ -92,10 +92,6 @@ jobs:
         shell: bash
         run: pnpm install --ignore-scripts --no-frozen-lockfile
 
-      - name: Build Bundle
-        shell: bash
-        run: pnpm build
-
       - name: Download artifact
         uses: actions/download-artifact@v7
         with:
@@ -117,4 +113,4 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
         shell: bash
         # pnpm detaches the local repo from HEAD, so we need to disable git checks
-        run: pnpm publish --access public --dry-run --no-git-checks --tag ${{ github.event.release.prerelease && 'next' || 'latest' }}
+        run: pnpm publish --access public --no-git-checks --tag ${{ github.event.release.prerelease && 'next' || 'latest' }}

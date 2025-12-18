@@ -71,7 +71,7 @@ for (const target of Object.keys(bindings)) {
 	writeFileSync(join(tmpDir, '.npmrc'), `//registry.npmjs.org/:_authToken=${process.env.NODE_AUTH_TOKEN}\n`);
 
 	try {
-		execFileSync('pnpm', ['publish', '--access', 'public', '--dry-run', '--tag', tag], {
+		execFileSync('pnpm', ['publish', '--access', 'public', '--tag', tag], {
 			cwd: tmpDir,
 			stdio: 'inherit',
 			env: { ...process.env, FORCE_COLOR: '1' }
